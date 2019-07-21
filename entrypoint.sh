@@ -144,28 +144,27 @@ cat <<-EOF > /caddybin/Caddyfile
 http://0.0.0.0:${PORT} {
 		root /wwwroot
 		index index.html
-    tls dspdop@gmail.com
-    proxy /ssh 127.0.0.1:4200 {
+    proxy /ssh http://127.0.0.1:4200 {
         websocket
         header_upstream -Origin
     }
-    proxy /img 127.0.0.1:999 {
+    proxy /img http://127.0.0.1:999 {
         websocket
         header_upstream -Origin
     }
-    proxy /portalin 127.0.0.1:998 {
+    proxy /portalin http://127.0.0.1:998 {
         websocket
         header_upstream -Origin
     }
-    proxy /a 10.0.0.1:5001 {
+    proxy /a http://10.0.0.1:5001 {
         websocket
         header_upstream -Origin
     }
-    proxy /b 10.0.0.1:5002 {
+    proxy /b http://10.0.0.1:5002 {
         websocket
         header_upstream -Origin
     }
-    proxy /c 10.0.0.1:5003 {
+    proxy /c http://10.0.0.1:5003 {
         websocket
         header_upstream -Origin
     }
