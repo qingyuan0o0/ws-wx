@@ -1,0 +1,38 @@
+{
+  "name": "wsray部署",
+  "description": "Deploy V2ray to Heroku.",
+  "keywords": ["V2ray"],
+  "env": {
+    "AppName": {
+       "description": "请输入最上方填写的App Name",
+       "value": "no"
+     },
+    "VER": {
+       "description": "默认latest安装最新版本V2Ray （输入V2Ray 版本号 进行指定版本安装。例如：3.22)",
+       "value": "4.18.1"
+     }, 
+    "UUID": {
+       "description": "Vmess协议默认UUID，请输入自己的UUID",
+       "value": "89682891-3d57-4cef-abbb-fbac5937ba29"
+     },
+    "AlterID": {
+       "description": "AlterID大小，推荐10，数值越大内存占用越高",
+       "value": "64"
+     }, 
+    "password": {
+       "description": "设置你的密码",
+       "value": "ssap"
+     }, 
+    "vkey": {
+       "description": "设置你的vkey",
+       "value": "0jdwy86vn24plx5e"
+     },
+    "V2RAY_RAY_BUFFER_SIZE": {
+       "description": "每个连接的缓存大小，单位MB，默认10。如果感觉有断流现象，请考虑将缓存改成1",
+       "value": "5"
+     }
+  },
+  "website": "https://github.com/qingyuan0o0/wstest-heroku",
+  "repository": "https://github.com/qingyuan0o0/wstest-heroku",
+  "stack": "container"
+ }
