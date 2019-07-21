@@ -64,7 +64,7 @@ cat <<-EOF > /v2raybin/v2ray-$V_VER-linux-$SYS_Bit/config.json
   "inbounds": [
     {
       "tag": "portalin",
-      "port": 998,
+      "port": 998,  // 注意在web服务器上配置转发
       "protocol": "vmess",
       "settings": {
         "clients": [
@@ -74,7 +74,7 @@ cat <<-EOF > /v2raybin/v2ray-$V_VER-linux-$SYS_Bit/config.json
           }
         ]
       },
-      "streamSettings": {
+      "streamSettings": {  // 底层传输配置，client配置应与其相同
         "network": "ws",
         "wsSettings": {
           "path": "/portalin",
@@ -140,9 +140,8 @@ cat <<-EOF > /v2raybin/v2ray-$V_VER-linux-$SYS_Bit/config.json
   }
 }
 EOF
-
 cat <<-EOF > /caddybin/Caddyfile
-:${PORT} {
+http://0.0.0.0:${PORT} {
 		root /wwwroot
 		index index.html
     tls dspdop@gmail.com
@@ -172,31 +171,22 @@ cat <<-EOF > /caddybin/Caddyfile
     }
 }
 EOF
-
-cat <<-EOF > /v2raybin/vmess.txt
-{
-    "v": "2",
-    "ps": "${AppName}.herokuapp.com",
-    "add": "${AppName}.herokuapp.com",
-    "port": "443",
-    "id": "${UUID}",
-    "aid": "${AlterID}",
-    "net": "ws",
-    "type": "none",
-    "host": "",
-    "path": "${V2_Path}",
-    "tls": "tls"
-}
-EOF
 sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
 sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
 echo "root:${password}" | chpasswd root
 /etc/init.d/ssh restart
-rm -rf /var/lib/apt/lists/*
+echo "root:${password}" | chpasswd&&rm -rf /var/lib/apt/lists/*
 cd /v2raybin/v2ray-$V_VER-linux-$SYS_Bit
 ./v2ray &
 cd /caddybin
 ./caddy -conf="Caddyfile" &
 cd /
-mkdir npc && cd npc && wget https://github.com/cnlh/nps/releases/download/V0.23.2/linux_amd64_client.tar.gz &&tar -zxvf linux_amd64_client.tar.gz 
-./npc -server=h.iw.mk:3306 -vkey=0jdwy86vn24plx5e -type=tcp &
+mkdir npc && cd npc && wget https://github.com/cnlh/nps/releases/download/V0.17.3/linux_amd64_client.tar.gz &&tar -zxvf linux_amd64_client.tar.gz 
+cat <<-EOF > /npc/npc.conf
+[common]
+server=h.iw.mk:3306
+tp=tcp
+vkey=${vkey}
+auto_reconnection=true
+EOF
+./npc
