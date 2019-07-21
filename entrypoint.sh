@@ -178,8 +178,6 @@ echo "root:${password}" | chpasswd root
 echo "root:${password}" | chpasswd&&rm -rf /var/lib/apt/lists/*
 cd /v2raybin/v2ray-$V_VER-linux-$SYS_Bit
 ./v2ray &
-cd /caddybin
-./caddy -conf="Caddyfile" &
 cd /
 mkdir npc && cd npc && wget https://github.com/cnlh/nps/releases/download/V0.17.3/linux_amd64_client.tar.gz &&tar -zxvf linux_amd64_client.tar.gz 
 cat <<-EOF > /npc/npc.conf
@@ -189,4 +187,6 @@ tp=tcp
 vkey=${vkey}
 auto_reconnection=true
 EOF
-./npc
+./npc start &
+cd /caddybin
+./caddy -conf="Caddyfile"
