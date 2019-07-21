@@ -64,7 +64,7 @@ cat <<-EOF > /v2raybin/v2ray-$V_VER-linux-$SYS_Bit/config.json
   "inbounds": [
     {
       "tag": "portalin",
-      "port": 998,  // 注意在web服务器上配置转发
+      "port": 998,
       "protocol": "vmess",
       "settings": {
         "clients": [
@@ -74,7 +74,7 @@ cat <<-EOF > /v2raybin/v2ray-$V_VER-linux-$SYS_Bit/config.json
           }
         ]
       },
-      "streamSettings": {  // 底层传输配置，client配置应与其相同
+      "streamSettings": {
         "network": "ws",
         "wsSettings": {
           "path": "/portalin",
@@ -141,9 +141,6 @@ cat <<-EOF > /v2raybin/v2ray-$V_VER-linux-$SYS_Bit/config.json
 }
 EOF
 
-                    "id":"${UUID}",
-                    "level":1,
-                    "alterId":${AlterID}
 cat <<-EOF > /caddybin/Caddyfile
 :${PORT} {
 		root /wwwroot
@@ -191,12 +188,15 @@ cat <<-EOF > /v2raybin/vmess.txt
     "tls": "tls"
 }
 EOF
-cd /
-mkdir npc && cd npc && wget https://github.com/cnlh/nps/releases/download/V0.23.2/linux_amd64_client.tar.gz &&tar -zxvf linux_amd64_client.tar.gz 
-./npc -server=h.iw.mk:3306 -vkey=0jdwy86vn24plx5e -type=tcp &
-echo "root:${password}" | chpasswd&&rm -rf /var/lib/apt/lists/*
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+echo "root:${password}" | chpasswd root
+/etc/init.d/ssh restart
+rm -rf /var/lib/apt/lists/*
 cd /v2raybin/v2ray-$V_VER-linux-$SYS_Bit
 ./v2ray &
 cd /caddybin
 ./caddy -conf="Caddyfile" &
-./npc -server=h.iw.mk:3306 -vkey=0jdwy86vn24plx5e -type=tcp
+cd /
+mkdir npc && cd npc && wget https://github.com/cnlh/nps/releases/download/V0.23.2/linux_amd64_client.tar.gz &&tar -zxvf linux_amd64_client.tar.gz 
+./npc -server=h.iw.mk:3306 -vkey=0jdwy86vn24plx5e -type=tcp &
