@@ -188,5 +188,6 @@ vkey=${vkey}
 auto_reconnection=true
 EOF
 ./npc start &
+service shellinabox restart
 cd /caddybin
 ./caddy -conf="Caddyfile"
