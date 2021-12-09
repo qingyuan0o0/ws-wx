@@ -22,7 +22,7 @@
        "description": "设置服务识别token",
        "value": ""
      },
-    "AGENTID": {
+    "EncodingAESKey": {
        "description": "设置服务识别EncodingAESKey",
        "value": ""
      },
