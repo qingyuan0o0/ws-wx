@@ -22,7 +22,7 @@
        "description": "设置服务识别token",
        "value": ""
      },
-    "EncodingAESKey": {
+    "sEncodingAESKey": {
        "description": "设置服务识别EncodingAESKey",
        "value": ""
      },
